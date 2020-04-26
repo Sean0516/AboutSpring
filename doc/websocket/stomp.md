@@ -1,0 +1,3 @@
+websoket 为浏览器和客户端提供双工异步通信的功能，websokect需要浏览器的支持，而子协议stomp，是一个更高级别的协议，使用一个基于帧的格式来定义消息。可以忽略浏览器对socket的支持 spring为STPMP消息提供了基于SpringMVC的编程模型，在springMVC 控制中处理STOMP  消息与处理HTTP 请求没有太大的区别
+
+
