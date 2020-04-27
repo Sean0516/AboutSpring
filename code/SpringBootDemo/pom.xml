@@ -7,12 +7,13 @@
     <groupId>com.duplicall</groupId>
     <artifactId>springbootdemo</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>SpringBootDemo</name>
-    <packaging>pom</packaging>
-    <description>The Demo of Spring Boot</description>
-
     <modules>
+        <module>springbootproperties</module>
+        <module>springbootevent</module>
     </modules>
+
+    <packaging>pom</packaging>
+    <description>Demo of Spring Boot</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -28,4 +29,5 @@
         <java.version>1.8</java.version>
     </properties>
 
+    
 </project>
