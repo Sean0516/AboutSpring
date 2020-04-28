@@ -10,6 +10,7 @@
     <modules>
         <module>springbootproperties</module>
         <module>springbootevent</module>
+        <module>springbootthread</module>
     </modules>
 
     <packaging>pom</packaging>
