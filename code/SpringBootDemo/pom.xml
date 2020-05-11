@@ -12,6 +12,7 @@
         <module>springbootevent</module>
         <module>springbootthread</module>
         <module>springbootcondition</module>
+        <module>springbootmvc</module>
     </modules>
 
     <packaging>pom</packaging>
