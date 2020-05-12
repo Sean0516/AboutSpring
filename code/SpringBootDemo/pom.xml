@@ -14,6 +14,7 @@
         <module>springbootcondition</module>
         <module>springbootmvc</module>
         <module>springbootaop</module>
+        <module>springbootswagger</module>
     </modules>
 
     <packaging>pom</packaging>
