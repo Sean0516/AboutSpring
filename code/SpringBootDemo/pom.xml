@@ -13,6 +13,7 @@
         <module>springbootthread</module>
         <module>springbootcondition</module>
         <module>springbootmvc</module>
+        <module>springbootaop</module>
     </modules>
 
     <packaging>pom</packaging>
