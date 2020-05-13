@@ -19,6 +19,7 @@
         <module>springbootresttemplatedemo</module>
         <module>common</module>
         <module>springbootmybatis</module>
+        <module>springbootjdbctemplate</module>
     </modules>
 
     <packaging>pom</packaging>

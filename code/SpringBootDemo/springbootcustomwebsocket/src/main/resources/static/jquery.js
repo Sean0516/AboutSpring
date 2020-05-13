@@ -1192,7 +1192,7 @@ jQuery.support = (function() {
 		hrefNormalized: ( a.getAttribute( "href" ) === "/a" ),
 
 		// Make sure that element opacity exists
-		// (IE uses filter instead)
+		// (IE uses interceptor instead)
 		// Use a regex to work around a WebKit issue. See #5145
 		opacity: /^0.55$/.test( a.style.opacity ),
 
@@ -5089,7 +5089,7 @@ var posProcess = function( selector, context ) {
 		later = "",
 		root = context.nodeType ? [context] : context;
 
-	// Position selectors must be done after the filter
+	// Position selectors must be done after the interceptor
 	// And so must :not(positional) so we move all PSEUDOs to the end
 	while ( (match = Expr.match.PSEUDO.exec( selector )) ) {
 		later += match[0];
@@ -5187,7 +5187,7 @@ jQuery.fn.extend({
 	},
 
 	filter: function( selector ) {
-		return this.pushStack( winnow(this, selector, true), "filter", selector );
+		return this.pushStack( winnow(this, selector, true), "interceptor", selector );
 	},
 
 	is: function( selector ) {
@@ -5414,7 +5414,7 @@ jQuery.extend({
 	}
 });
 
-// Implement the identical functionality for filter and not
+// Implement the identical functionality for interceptor and not
 function winnow( elements, qualifier, keep ) {
 
 	// Can't pass null or undefined to indexOf in Firefox 4
@@ -6435,7 +6435,7 @@ if ( !jQuery.support.opacity ) {
 	jQuery.cssHooks.opacity = {
 		get: function( elem, computed ) {
 			// IE uses filters for opacity
-			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "" ) ?
+			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.interceptor : elem.style.interceptor) || "" ) ?
 				( parseFloat( RegExp.$1 ) / 100 ) + "" :
 				computed ? "1" : "";
 		},
@@ -6448,7 +6448,7 @@ if ( !jQuery.support.opacity ) {
 			// Force it by setting the zoom level
 			style.zoom = 1;
 
-			// Set the alpha filter to set the opacity
+			// Set the alpha interceptor to set the opacity
 			var opacity = jQuery.isNaN( value ) ?
 				"" :
 				"alpha(opacity=" + value * 100 + ")",
@@ -6800,7 +6800,7 @@ jQuery.fn.extend({
 		return this.map(function(){
 			return this.elements ? jQuery.makeArray( this.elements ) : this;
 		})
-		.filter(function(){
+		.interceptor(function(){
 			return this.name && !this.disabled &&
 				( this.checked || rselectTextarea.test( this.nodeName ) ||
 					rinput.test( this.type ) );
