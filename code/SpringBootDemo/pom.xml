@@ -18,6 +18,7 @@
         <module>springbootcustomwebsocket</module>
         <module>springbootresttemplatedemo</module>
         <module>common</module>
+        <module>springbootmybatis</module>
     </modules>
 
     <packaging>pom</packaging>
