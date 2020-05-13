@@ -15,6 +15,9 @@
         <module>springbootmvc</module>
         <module>springbootaop</module>
         <module>springbootswagger</module>
+        <module>springbootcustomwebsocket</module>
+        <module>springbootresttemplatedemo</module>
+        <module>common</module>
     </modules>
 
     <packaging>pom</packaging>

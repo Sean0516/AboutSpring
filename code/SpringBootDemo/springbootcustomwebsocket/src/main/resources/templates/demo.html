@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+</head>
+<body>
+<button onclick="connect()">Connect</button>
+<button onclick="sendMsg()">submit</button>
+<script th:src="@{/jquery.js}"></script>
+
+<script type="text/javascript">
+    let webSocket;
+
+    function connect() {
+        webSocket = new WebSocket("ws://192.168.1.145:8080/test");
+        webSocket.onopen = function (p1) {
+            console.log("打开socket")
+        };
+        webSocket.onmessage = function (p1) {
+            console.log("server msg" + p1.data)
+        }
+        webSocket.onclose = function () {
+            console.log(" web socket close_____")
+        }
+
+        webSocket.onerror = function (p1) {
+            console.error("web socket error " + p1.data)
+        }
+
+    }
+
+    function sendMsg() {
+        if (webSocket) {
+            webSocket.send("hello server")
+        } else {
+            console.log("socket not init ,please connect")
+        }
+    }
+
+</script>
+</body>
+</html>
