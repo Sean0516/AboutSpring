@@ -24,7 +24,7 @@ public class DemoImpl {
     private JdbcTemplate schoolTemplate;
 
     public List<Student> listStudent() {
-        return studentTemplate.queryForList("select * from t_student", Student.class, new Object[]{});
+        return studentTemplate.query("select * from t_student", new Object[]{}, new BeanPropertyRowMapper<>(Student.class));
     }
 
     public List<Student> listTeacher() {
@@ -38,10 +38,12 @@ public class DemoImpl {
     public Student queryTeacherById(int id) {
         return schoolTemplate.queryForObject("selcet * from teacher where id = ?", Student.class, new Object[]{id});
     }
-    public void insertTeacher(Student student){
-        studentTemplate.update("INSERT  INTO teacher (name ,age ) VALUE (?,?)",student.getName(),student.getAge());
-    }
-    public void updateTeacher(Student student){
 
+    public void insertTeacher(Student student) {
+        schoolTemplate.update("INSERT  INTO teacher (name ,age ) VALUE (?,?)", student.getName(), student.getAge());
+    }
+
+    public void updateTeacher(Student student) {
+        schoolTemplate.update("update teacher set name =?, age=? where  id=?", student.getName(), student.getAge(), student.getId());
     }
 }
