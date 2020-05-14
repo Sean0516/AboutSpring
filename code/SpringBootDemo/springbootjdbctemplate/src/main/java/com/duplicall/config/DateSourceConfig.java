@@ -22,7 +22,7 @@ public class DateSourceConfig {
         return getDataSource("jdbc:mysql://localhost:3306/test");
     }
 
-    @Bean(name = "userTemplate")
+    @Bean(name = "studentTemplate")
     @Primary
     public JdbcTemplate jdbcTemplate(@Qualifier("user") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
@@ -33,7 +33,7 @@ public class DateSourceConfig {
         return getDataSource("jdbc:mysql://localhost:3306/school");
     }
 
-    @Bean(name = "studentTemplate")
+    @Bean(name = "schoolTemplate")
     public JdbcTemplate schoolJdbcTemplate(@Qualifier("school") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
