@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,11 +33,15 @@ public class DemoImpl {
     }
 
     public Student queryStudentById(int id) {
-        return studentTemplate.queryForObject("selcet * from t_student where id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Student.class));
+        return studentTemplate.queryForObject("select  * from t_student where id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Student.class));
     }
 
     public Student queryTeacherById(int id) {
-        return schoolTemplate.queryForObject("selcet * from teacher where id = ?", Student.class, new Object[]{id});
+        return schoolTemplate.queryForObject("select * from teacher where id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Student.class));
+    }
+
+    public Student queryTeacherPrepStatementById(int id) {
+        return schoolTemplate.query("select * from teacher where id = ?", preparedStatement -> preparedStatement.setInt(1, id), new BeanPropertyRowMapper<>(Student.class)).get(0);
     }
 
     public void insertTeacher(Student student) {
@@ -46,4 +51,9 @@ public class DemoImpl {
     public void updateTeacher(Student student) {
         schoolTemplate.update("update teacher set name =?, age=? where  id=?", student.getName(), student.getAge(), student.getId());
     }
+    public void deleteTeacherById(int id){
+        schoolTemplate.update("DELETE  FROM  teacher WHERE  id=?",id);
+    }
+
+
 }
