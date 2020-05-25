@@ -20,6 +20,7 @@
         <module>common</module>
         <module>springbootmybatis</module>
         <module>springbootjdbctemplate</module>
+        <module>springbootjpa</module>
     </modules>
 
     <packaging>pom</packaging>
