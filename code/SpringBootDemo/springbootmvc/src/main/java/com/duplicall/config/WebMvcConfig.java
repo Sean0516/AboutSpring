@@ -1,10 +1,18 @@
 package com.duplicall.config;
 
+import com.duplicall.config.filter.Custom2Filter;
+import com.duplicall.config.filter.CustomFilter;
 import com.duplicall.config.interceptor.CustomInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @Description WebMvcConfig
@@ -15,6 +23,25 @@ import org.springframework.web.servlet.config.annotation.*;
 @Component
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean filterFilterRegistrationBean = new FilterRegistrationBean();
+        filterFilterRegistrationBean.setOrder(1);
+        filterFilterRegistrationBean.setFilter(new Custom2Filter());
+        filterFilterRegistrationBean.setUrlPatterns(Collections.singletonList("/demo"));
+        return filterFilterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean filter2RegistrationBean() {
+        FilterRegistrationBean filterFilterRegistrationBean = new FilterRegistrationBean();
+        // order 越大，过滤优先级越高
+        filterFilterRegistrationBean.setOrder(2);
+        filterFilterRegistrationBean.setFilter(new CustomFilter());
+        filterFilterRegistrationBean.setUrlPatterns(Collections.singletonList("/demo"));
+        return filterFilterRegistrationBean;
+    }
 
     /**
      * 配置静态资源访问
