@@ -11,8 +11,9 @@ import org.springframework.data.repository.query.Param;
  * @Date 2020/5/25 17:22
  * @Version 1.0
  */
+
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     Student getStudentByName(String name);
-    @Query(value = "select stu.name from t_student stu where stu.id = :id")
+    @Query(value = "select stu.name from t_student stu where stu.id = :id",nativeQuery = true)
     String getStudentNameById(@Param("id") int id);
 }

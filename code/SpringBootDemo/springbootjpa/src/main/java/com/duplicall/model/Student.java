@@ -4,10 +4,7 @@ package com.duplicall.model;
 
 import org.hibernate.annotations.Tables;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Administrator
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "t_student")
 public class Student {
     @Id
+    @GeneratedValue
     private Integer id;
     @Column()
     private String name;

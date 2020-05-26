@@ -53,6 +53,6 @@ public class StudentImpl implements IStudent {
 
     @Override
     public void delete(int id) {
-
+        studentRepository.delete(id);
     }
 }
