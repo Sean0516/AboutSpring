@@ -21,6 +21,7 @@
         <module>springbootmybatis</module>
         <module>springbootjdbctemplate</module>
         <module>springbootjpa</module>
+        <module>springbootredis</module>
     </modules>
 
     <packaging>pom</packaging>
