@@ -40,7 +40,9 @@ public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        return new RestTemplate(httpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate(httpRequestFactory());
+        restTemplate.setErrorHandler(new CustomErrorHandler());
+        return restTemplate;
     }
 
     @Bean
