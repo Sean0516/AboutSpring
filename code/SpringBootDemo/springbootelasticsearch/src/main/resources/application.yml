@@ -1,0 +1,7 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-name: cd-es5
+      cluster-nodes: 192.168.1.86:9300
+      properties: {'xpack.security.user': 'elastic:voicecodes'}
+

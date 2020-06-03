@@ -22,6 +22,8 @@
         <module>springbootjdbctemplate</module>
         <module>springbootjpa</module>
         <module>springbootredis</module>
+        <module>springbootmongodb</module>
+        <module>springbootelasticsearch</module>
     </modules>
 
     <packaging>pom</packaging>
