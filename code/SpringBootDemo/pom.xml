@@ -24,6 +24,7 @@
         <module>springbootredis</module>
         <module>springbootmongodb</module>
         <module>springbootelasticsearch</module>
+        <module>springbootkafka</module>
     </modules>
 
     <packaging>pom</packaging>
