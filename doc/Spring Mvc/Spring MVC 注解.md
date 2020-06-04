@@ -1,5 +1,5 @@
 Spring 常用注解有以下
-### @Conttoller 
+### @Controller 
 用来表示注解的类做为MVC 框架的一个controller 的主要注解 ，dispatcher servlet 扫描被@controller 注解的类，从而将web请求映射到被@requestmapping 注解的方法上。
 
 

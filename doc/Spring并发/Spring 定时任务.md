@@ -1,4 +1,33 @@
-spring boot 实现定时任务首先需要在配置类注解 @EnableScheduling 来开启定时任务的支持，然后在要执行定时任务的方法上注解 @Scheduled ，声明这是一个定时任务
+spring boot 实现定时任务首先需要在配置类注解 @EnableScheduling 来开启定时任务的支持，然后在要执行定时任务的方法上注解 @Scheduled ，声明这是一个定时任务 
+
+需要注意的是，定时任务使用的是同一个线程池，如果未配置线程池数量，那么所有的定时任务将由一个线程执行，如果某个定时任务存在阻塞的情况，那么其他的任务将无法执行。可以通过配置线程池数量解决该问题
+
+
+```
+/**
+ * @author Sean
+ * @description 定时任务线程池配置
+ * @date 2020/4/28 21:58
+ */
+@Configuration
+public class ScheduleConfig implements SchedulingConfigurer {
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
+        scheduledTaskRegistrar.setScheduler(taskScheduler());
+    }
+
+    @Bean
+    protected ThreadPoolTaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(3);
+        threadPoolTaskScheduler.setThreadNamePrefix("schedule-pool-thread-");
+        threadPoolTaskScheduler.afterPropertiesSet();
+        threadPoolTaskScheduler.setWaitForTasksToCompleteOnShutdown(true);
+        return threadPoolTaskScheduler;
+    }
+}
+```
+
 
 ```
 @Component
