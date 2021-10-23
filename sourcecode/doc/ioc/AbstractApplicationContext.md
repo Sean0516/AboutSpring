@@ -19,13 +19,36 @@ setConfigLocations(configLocations);
 
 
 
-1. 创建Bean 工厂 
-2. 对xml 或注解进行读取或解析，并放入BeanDefinitionMap
-3. 执行beanFactoryPostProcessor
-4. 注册Bean 处理器。 只是注册功能
-5. 初始化message 源 , 国际化处理
-6. 在所有注册的bean 中查找listener bean ，注册到新消息广播器中
-7. 注册监听器
+1. 准备工作
+2. 创建Bean 工厂 
+3. 对xml 或注解进行读取或解析，并放入BeanDefinitionMap
+4. 给容器对象进行某些初始化操作
+5. 执行beanFactoryPostProcessor的扩展工作
+6. 初始化对象前的准备工作
+   1. 注册BeanPostPressor。 只是注册功能
+   2. 初始化广播器
+   3. 初始化message 源 , 国际化处理
+   4. 注册监听器
+7. 对象实例化操作
+   1. 自定义属性
+   2. 容器属性赋值
+   3. 调用benPostProcessor before 前置处理方法进行扩展
+   4. 调用init- method 进行初始化方法的调用
+   5. 调用 benPostProcessor before 后置方法进行扩展
+8.  销毁
+   1. 如果 bean 实现DisposableBean 接口，当 spring 容器关闭时，会调用 destory()。
+   2. 如果为bean 指定了 destroy 方法（ 的 destroy-method 属性），那么将调用它
+
+创建对象的几个核心方法
+
+	1. getBean
+ 	2. doGetBean
+ 	3. creatBean
+ 	4. doCreateBean
+ 	5. CreateBeanInstance
+ 	6. populateBean
+
+
 
 ```java
 public void refresh() throws BeansException, IllegalStateException {
@@ -42,7 +65,7 @@ public void refresh() throws BeansException, IllegalStateException {
             this.initMessageSource();
             this.initApplicationEventMulticaster();
             this.onRefresh();
-            this.registerListeners(); // 在所有注册的bean 中查找listener bean ，注册到新消息广播器重
+            this.registerListeners(); // 在所有注册的bean 中查找listener bean ，注册到新消息广播器中
             this.finishBeanFactoryInitialization(beanFactory); // 实例化剩下的单实例
             this.finishRefresh();
         } catch (BeansException var9) {
