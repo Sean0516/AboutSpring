@@ -239,7 +239,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	public AbstractApplicationContext(@Nullable ApplicationContext parent) {
 		this();
-		setParent(parent);
+		setParent(parent); // 设置父容器
 	}
 
 
@@ -520,12 +520,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			/**
+			 * 做容器属性前的准备工作
+			 * 1. 设置容器的启动时间
+			 * 2. 设置活跃状态为true
+			 * 3. 设置关闭状态为false
+			 * 4. 获取Environment 对象，添加当前系统属性到 Environment 对象中
+			 * 5. 准备监听器和事件的集合对象，默认为空的集合
+			 */
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 创建BeanFactory 加载xml 配置文件的属性值到当前工厂中。 最重要的就是 BeanDefinition
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// BeanFactory 的准备工作
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -587,9 +597,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
-		this.startupDate = System.currentTimeMillis();
-		this.closed.set(false);
-		this.active.set(true);
+		this.startupDate = System.currentTimeMillis();// 设置容器启动事件
+		this.closed.set(false); // 设置关闭标志位
+		this.active.set(true);// 设置容器的激活标志位
 
 		if (logger.isDebugEnabled()) {
 			if (logger.isTraceEnabled()) {
@@ -601,14 +611,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
-		initPropertySources();
+		initPropertySources(); // 初始化资源属性。 留给子类进行扩展
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
-		getEnvironment().validateRequiredProperties();
+		getEnvironment().validateRequiredProperties(); // 对Environment 进行校验
 
 		// Store pre-refresh ApplicationListeners...
-		if (this.earlyApplicationListeners == null) {
+		if (this.earlyApplicationListeners == null) { // 判断刷新前的应用程序监听集合是否为空，如果为空 ，则把监听器添加到此集合
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
 		else {
@@ -638,7 +648,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 初始化BeanFactory 并进行XML文件读取。
 		refreshBeanFactory();
+		// 返回当前实体的BeanFactory 属性
 		return getBeanFactory();
 	}
 
