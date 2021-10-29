@@ -168,6 +168,7 @@ public class InternalResourceView extends AbstractUrlBasedView {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Forwarding to [" + getUrl() + "]");
 			}
+			//将来自 servlet 的请求转发到服务器上的另一个资源（servlet、JSP 文件或 HTML 文件）。 此方法允许一个 servlet 对请求进行初步处理，并允许另一个资源生成响应。
 			rd.forward(request, response);
 		}
 	}

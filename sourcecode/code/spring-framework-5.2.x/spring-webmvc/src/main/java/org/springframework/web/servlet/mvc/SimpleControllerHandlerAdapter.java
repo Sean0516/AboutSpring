@@ -48,7 +48,7 @@ public class SimpleControllerHandlerAdapter implements HandlerAdapter {
 	@Nullable
 	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		// 将handler 转换为controller ,通过对应的controller 执行对应的方法
 		return ((Controller) handler).handleRequest(request, response);
 	}
 
