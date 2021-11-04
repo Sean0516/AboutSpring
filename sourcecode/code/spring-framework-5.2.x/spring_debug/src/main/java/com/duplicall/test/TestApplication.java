@@ -18,8 +18,8 @@ public class TestApplication {
 //		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
 
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
-
-		User bean = annotationConfigApplicationContext.getBean(User.class);
-		System.out.println(bean);
+		for (String beanDefinitionName : annotationConfigApplicationContext.getBeanDefinitionNames()) {
+			System.out.println(beanDefinitionName);
+		}
 	}
 }
