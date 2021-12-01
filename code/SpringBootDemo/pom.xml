@@ -25,6 +25,7 @@
         <module>springbootmongodb</module>
         <module>springbootelasticsearch</module>
         <module>springbootkafka</module>
+        <module>springbootmybatisplus</module>
     </modules>
 
     <packaging>pom</packaging>
