@@ -55,7 +55,7 @@ public interface SingletonBeanRegistry {
 	 * @see org.springframework.beans.factory.DisposableBean#destroy
 	 * @see org.springframework.beans.factory.support.BeanDefinitionRegistry#registerBeanDefinition
 	 */
-	void registerSingleton(String beanName, Object singletonObject);
+	void registerSingleton(String beanName, Object singletonObject); // 根据指定的bean name 注册单例bean
 
 	/**
 	 * Return the (raw) singleton object registered under the given name.
@@ -71,7 +71,7 @@ public interface SingletonBeanRegistry {
 	 * @see ConfigurableListableBeanFactory#getBeanDefinition
 	 */
 	@Nullable
-	Object getSingleton(String beanName);
+	Object getSingleton(String beanName); // 根据bean name 获取单例bean
 
 	/**
 	 * Check if this registry contains a singleton instance with the given name.
@@ -95,7 +95,7 @@ public interface SingletonBeanRegistry {
 	 * @see org.springframework.beans.factory.ListableBeanFactory#containsBeanDefinition
 	 * @see org.springframework.beans.factory.BeanFactory#containsBean
 	 */
-	boolean containsSingleton(String beanName);
+	boolean containsSingleton(String beanName); // 判断是否包含单例对象
 
 	/**
 	 * Return the names of singleton beans registered in this registry.

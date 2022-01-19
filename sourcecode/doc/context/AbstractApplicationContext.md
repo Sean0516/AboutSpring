@@ -42,11 +42,11 @@ setConfigLocations(configLocations);
 创建对象的几个核心方法
 
 	1. getBean
- 	2. doGetBean
- 	3. creatBean
- 	4. doCreateBean
- 	5. CreateBeanInstance
- 	6. populateBean
+	2. doGetBean
+	3. creatBean
+	4. doCreateBean
+	5. CreateBeanInstance
+	6. populateBean
 
 
 

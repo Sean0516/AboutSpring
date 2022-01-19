@@ -44,7 +44,7 @@ import org.springframework.lang.Nullable;
 public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
 
 	/** Cache of singleton objects created by FactoryBeans: FactoryBean name to object. */
-	private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<>(16);
+	private final Map<String, Object> factoryBeanObjectCache = new ConcurrentHashMap<>(16); // 使用map 来报错FactoryBean
 
 
 	/**
@@ -54,7 +54,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * or {@code null} if the type cannot be determined yet
 	 */
 	@Nullable
-	protected Class<?> getTypeForFactoryBean(FactoryBean<?> factoryBean) {
+	protected Class<?> getTypeForFactoryBean(FactoryBean<?> factoryBean) { // 根据指定的类型获取对应的FactoryBean
 		try {
 			if (System.getSecurityManager() != null) {
 				return AccessController.doPrivileged(
@@ -80,7 +80,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * or {@code null} if not available
 	 */
 	@Nullable
-	protected Object getCachedObjectForFactoryBean(String beanName) {
+	protected Object getCachedObjectForFactoryBean(String beanName) {// 根据 bean name  获取FactoryBean
 		return this.factoryBeanObjectCache.get(beanName);
 	}
 
@@ -153,7 +153,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	 * @throws BeanCreationException if FactoryBean object creation failed
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
-	private Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanName) throws BeanCreationException {
+	private Object doGetObjectFromFactoryBean(FactoryBean<?> factory, String beanName) throws BeanCreationException { // 具体获取FactoryBean 的实现
 		Object object;
 		try {
 			if (System.getSecurityManager() != null) {

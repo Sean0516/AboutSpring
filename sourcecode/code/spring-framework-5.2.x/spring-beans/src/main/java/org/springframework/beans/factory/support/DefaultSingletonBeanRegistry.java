@@ -74,13 +74,21 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private static final int SUPPRESSED_EXCEPTIONS_LIMIT = 100;
 
 
-	/** Cache of singleton objects: bean name to bean instance. */
+	/** Cache of singleton objects: bean name to bean instance.
+	 * 一级缓存 spring 的容器,也就是存放完整的bean 实例, 已经实例化和初始化好的实例
+	 */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
-	/** Cache of singleton factories: bean name to ObjectFactory. */
+	/** Cache of singleton factories: bean name to ObjectFactory.
+	 *三级缓存  存放的是ObjectFactory ,传入的是一个匿名内部类，ObjectFactory.getObject 最终调用的是 getEarlyBeanReference 方法
+	 *如果bean 被代理  getEarlyBeanReference 方法 返回bean 的代理对象 如果bean 未被代理 ，则返回 原来bean 的实例
+	 */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
-	/** Cache of early singleton objects: bean name to bean instance. */
+	/** Cache of early singleton objects: bean name to bean instance.
+	 *二级缓存， 主要用于保存未初始化的对象 ，属性未填充。 同时分为bean 是否可以被AOP切面代理 。如果没有，则保存属性未填充的半成品bean 实例。
+	 * 如果被AOP 代理，则保存的是代理的bean 实例 BeanProxy ，目标bean 还是半成品
+	 */
 	private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<>(16);
 
 	/** Set of registered singletons, containing the bean names in registration order. */

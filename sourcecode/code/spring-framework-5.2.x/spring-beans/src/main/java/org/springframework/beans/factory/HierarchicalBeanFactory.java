@@ -37,7 +37,7 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 	 * Return the parent bean factory, or {@code null} if there is none.
 	 */
 	@Nullable
-	BeanFactory getParentBeanFactory();
+	BeanFactory getParentBeanFactory(); // 获取父 bean factory
 
 	/**
 	 * Return whether the local bean factory contains a bean of the given name,
@@ -48,6 +48,6 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 	 * @return whether a bean with the given name is defined in the local factory
 	 * @see BeanFactory#containsBean
 	 */
-	boolean containsLocalBean(String name);
+	boolean containsLocalBean(String name); //返回本地 bean 工厂是否包含给定名称的 bean
 
 }
