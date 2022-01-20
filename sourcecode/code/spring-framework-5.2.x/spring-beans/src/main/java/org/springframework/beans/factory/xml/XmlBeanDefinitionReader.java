@@ -307,7 +307,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	@Override
 	public int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException {
-		return loadBeanDefinitions(new EncodedResource(resource));
+		return loadBeanDefinitions(new EncodedResource(resource)); // 构造一个EncodedResource
 	}
 
 	/**
@@ -322,19 +322,20 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Loading XML bean definitions from " + encodedResource);
 		}
-
+		// 通过属性来记录已经加载的资源
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 
 		if (!currentResources.add(encodedResource)) {
 			throw new BeanDefinitionStoreException(
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
-
+		// 从encodedResource 获取 resource 并且获取其中的InputStream
 		try (InputStream inputStream = encodedResource.getResource().getInputStream()) {
 			InputSource inputSource = new InputSource(inputStream);
 			if (encodedResource.getEncoding() != null) {
 				inputSource.setEncoding(encodedResource.getEncoding());
 			}
+			// 进入真正的核心逻辑部分
 			return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 		}
 		catch (IOException ex) {
@@ -387,8 +388,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			throws BeanDefinitionStoreException {
 
 		try {
-			Document doc = doLoadDocument(inputSource, resource);
-			int count = registerBeanDefinitions(doc, resource);
+			Document doc = doLoadDocument(inputSource, resource); // 加载资源文件为Document
+			int count = registerBeanDefinitions(doc, resource); // 根据获取的Document 去注册bean definition
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
 			}
@@ -506,9 +507,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @see BeanDefinitionDocumentReader#registerBeanDefinitions
 	 */
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
-		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
-		int countBefore = getRegistry().getBeanDefinitionCount();
-		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
+		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader(); //创建BeanDefinitionDocumentReader
+		int countBefore = getRegistry().getBeanDefinitionCount();// 记录统计前tBeanDefinition 的加载个数
+		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));// 加载及注册bean
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}
 

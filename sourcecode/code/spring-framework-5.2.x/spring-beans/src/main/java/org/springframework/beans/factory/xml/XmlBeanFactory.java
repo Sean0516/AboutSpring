@@ -54,7 +54,7 @@ import org.springframework.core.io.Resource;
 @SuppressWarnings({"serial", "all"})
 public class XmlBeanFactory extends DefaultListableBeanFactory {
 
-	private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);
+	private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);// xml bean definition reader
 
 
 	/**
@@ -74,7 +74,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 	 * @param parentBeanFactory parent bean factory
 	 * @throws BeansException in case of loading or parsing errors
 	 */
-	public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException {
+	public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException { // load file
 		super(parentBeanFactory);
 		this.reader.loadBeanDefinitions(resource);
 	}

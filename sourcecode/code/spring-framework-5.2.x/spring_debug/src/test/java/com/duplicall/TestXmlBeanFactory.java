@@ -1,7 +1,12 @@
 package com.duplicall;
 
+import com.duplicall.test.config.EchoBeanPostProcessor;
+import com.duplicall.test.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -12,10 +17,17 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class TestXmlBeanFactory {
 	@Test
-	public void testXmlBeanFactory(){
+	public void testXmlBeanFactory() {
 		XmlBeanFactory xmlBeanFactory = new XmlBeanFactory(new ClassPathResource("spring-bean.xml"));
-		for (String beanDefinitionName : xmlBeanFactory.getBeanDefinitionNames()) {
-			System.out.println("beanDefinitionName = " + beanDefinitionName);
-		}
+		xmlBeanFactory.addBeanPostProcessor(new EchoBeanPostProcessor());
+		User user = xmlBeanFactory.getBean("user", User.class);
+		System.out.println("user = " + user);
+	}
+
+	@Test
+	public void testXmlPathApplicationContext() {
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
+		User user = applicationContext.getBean("user", User.class);
+		System.out.println("user = " + user);
 	}
 }

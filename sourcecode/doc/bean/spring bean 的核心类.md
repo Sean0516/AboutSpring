@@ -152,6 +152,10 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
  }
 ```
 
+#### AbstractBeanFactory
+
+综合FactoryBeanRegistrySupport 和ConfigurableBeanFactory 的功能
+
 #### BeanFactory 
 
 定义各种获取Bean  及bean 的各种属性 
@@ -186,7 +190,6 @@ public interface HierarchicalBeanFactory extends BeanFactory {
 
 - 获取beandefinition数量
 - 获取所有的的BeanDefinitionNames 
-- 
 
 #### BeanDefinitionRegistry 
 
@@ -221,7 +224,55 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 }
 ```
 
-#### 
+#### AutowireCapableBeanFactory
 
+提供创建Bean  ，自动注入， 初始化以及应用Bean 的后处理器
 
+![image-20220120101515226](https://gitee.com/Sean0516/image/raw/master/img/image-20220120101515226.png)
+
+#### AbstractAutowireCapableBeanFactory
+
+综合AutowireCapableBeanFactory 并对接口 Autowire BeanFactory 进行实现
+
+#### DefaultListableBeanFactory
+
+综合上面的所有功能。 主要是对bean 注册后的处理
+
+### XmlBeanFactory
+
+XmlBeanFactory 对DefaultListableBeanFactory 进行了扩展
+
+```java
+public class XmlBeanFactory extends DefaultListableBeanFactory {
+
+   private final XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this); // xml bean definition reader
+   public XmlBeanFactory(Resource resource) throws BeansException {
+      this(resource, null);
+   }
+   public XmlBeanFactory(Resource resource, BeanFactory parentBeanFactory) throws BeansException { // load file
+      super(parentBeanFactory);
+      this.reader.loadBeanDefinitions(resource);
+   }
+}
+```
+
+### XmlBeanDefinitionReader
+
+xml 配置文件的读取是spring 中重要的功能，因为spring 的大部分功能都是以配置作为切入点的。
+
+![image-20220120102747444](https://gitee.com/Sean0516/image/raw/master/img/image-20220120102747444.png)
+
+- ResourceLoader  定义资源加载器，主要应用于根据给定的资源文件地址返回对应的Resource
+- BeanDefinitionReader 主要定义资源文件读取并转换为BeanDefinition 的各个功能
+- EnvironmentCapable  定义获取Environment 的方法
+- DocumentLoader  定义从资源文件加载到转换为Document 的功能
+- AbstractBeanDefinitionReader  实现 EnvironmentCapable   和 BeanDefinitionReader ，并对定义的功能进行扩展和实现
+- BeanDefinitionDocumentReader 定义读取Document  并注册BeanDefinition 功能
+
+由此可知，xml 读取xml 注入到bean的基本流程如下
+
+1. 通过继承自AbstractBeanDefinitionReader 中的方法，来使用ResourLoader 将资源文件路径转换为对应的Resource 文件
+2. tonggDocumentLoader 对Resource 文件进行转换，将Resource 文件转为Document 文件
+3. 对Docment 和 Element 进行解析 
+4. 将解析后的数据注册为BeanDefinition
 

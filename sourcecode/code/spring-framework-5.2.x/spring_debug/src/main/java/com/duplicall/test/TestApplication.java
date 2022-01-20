@@ -1,11 +1,5 @@
 package com.duplicall.test;
 
-import com.duplicall.test.config.MainConfig;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.ClassPathResource;
-
 /**
  * @Description TestApplication
  * @Author Sean
@@ -15,11 +9,10 @@ import org.springframework.core.io.ClassPathResource;
 public class TestApplication {
 	public static void main(String[] args) {
 
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
-
-		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
-		for (String beanDefinitionName : annotationConfigApplicationContext.getBeanDefinitionNames()) {
-			System.out.println(beanDefinitionName);
-		}
+//		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
+//		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
+//		for (String beanDefinitionName : annotationConfigApplicationContext.getBeanDefinitionNames()) {
+//			System.out.println(beanDefinitionName);
+//		}
 	}
 }

@@ -1,4 +1,4 @@
-IOC 流程
+### refresh 方法
 
 创建环境对象 ，包含系统属性
 
@@ -17,69 +17,71 @@ setConfigLocations(configLocations);
 	}
 ```
 
+1. prepareRefresh()准备工作 
+   1. 设置容器的启动事件
+   2. 设置活跃状态为true
 
-
-1. 准备工作
-2. 创建Bean 工厂 
-3. 对xml 或注解进行读取或解析，并放入BeanDefinitionMap
-4. 给容器对象进行某些初始化操作
-5. 执行beanFactoryPostProcessor的扩展工作
-6. 初始化对象前的准备工作
+2. obtainFreshBeanFactory（）创建Bean 工厂 对xml 或注解进行读取或解析，并放入BeanDefinitionMap
+3. repareBeanFactory(beanFactory) 给容器对象进行某些初始化操作 （BeanFactory进行一些设置，比如context的类加载器，BeanPostProcessor和XXXAware自动装配等
+4. postProcessBeanFactory  BeanFactory准备工作完成后进行的后置处理工作
+5. invokeBeanFactoryPostProcessors(beanFactory) 执行BeanFactoryPostProcessor的扩展工作 
+6. 初始化对象前的准备工作  (initMessageSource  initApplicationEventMulticaster  registerListeners )
    1. 注册BeanPostPressor。 只是注册功能
    2. 初始化广播器
    3. 初始化message 源 , 国际化处理
    4. 注册监听器
-7. 对象实例化操作
+7. 对象实例化操作  (finishBeanFactoryInitialization  初始化所有剩下的非懒加载的单例bean) 
    1. 自定义属性
    2. 容器属性赋值
    3. 调用benPostProcessor before 前置处理方法进行扩展
    4. 调用init- method 进行初始化方法的调用
    5. 调用 benPostProcessor before 后置方法进行扩展
-8.  销毁
+8. 销毁
    1. 如果 bean 实现DisposableBean 接口，当 spring 容器关闭时，会调用 destory()。
    2. 如果为bean 指定了 destroy 方法（ 的 destroy-method 属性），那么将调用它
 
-创建对象的几个核心方法
+refresh 的方法执行顺序图
 
-	1. getBean
-	2. doGetBean
-	3. creatBean
-	4. doCreateBean
-	5. CreateBeanInstance
-	6. populateBean
-
-
+![image-20220120191056228](https://gitee.com/Sean0516/image/raw/master/img/image-20220120191056228.png)
 
 ```java
 public void refresh() throws BeansException, IllegalStateException {
     synchronized(this.startupShutdownMonitor) {
-        // 创建容器前的准备工作 
-        this.prepareRefresh();
-        ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();
-        this.prepareBeanFactory(beanFactory); // beanFactory 准备工作，对各种属性进行填充
+      // Prepare this context for refreshing.
+			/**
+			 * 做容器属性前的准备工作
+			 * 1. 设置容器的启动时间
+			 * 2. 设置活跃状态为true
+			 * 3. 设置关闭状态为false
+			 * 4. 获取Environment 对象，添加当前系统属性到 Environment 对象中
+			 * 5. 准备监听器和事件的集合对象，默认为空的集合
+			 */
+			prepareRefresh();
+			// 创建BeanFactory 同时，加载xml配置文件或者注解进行BeanDefinition的解析和注册
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+			// BeanFactory的预准备工作（BeanFactory进行一些设置，比如context的类加载器，BeanPostProcessor和XXXAware自动装配等）
+			prepareBeanFactory(beanFactory);
 
-        try {
-            this.postProcessBeanFactory(beanFactory);
-            this.invokeBeanFactoryPostProcessors(beanFactory); //执行beanFactoryPostProcessor
-            this.registerBeanPostProcessors(beanFactory); //注册Bean 处理器。 只是注册功能
-            this.initMessageSource();
-            this.initApplicationEventMulticaster();
-            this.onRefresh();
-            this.registerListeners(); // 在所有注册的bean 中查找listener bean ，注册到新消息广播器中
-            this.finishBeanFactoryInitialization(beanFactory); // 实例化剩下的单实例
-            this.finishRefresh();
-        } catch (BeansException var9) {
-            if (this.logger.isWarnEnabled()) {
-                this.logger.warn("Exception encountered during context initialization - cancelling refresh attempt: " + var9);
-            }
-
-            this.destroyBeans();
-            this.cancelRefresh(var9);
-            throw var9;
-        } finally {
-            this.resetCommonCaches();
-        }
-
+			try {
+				//BeanFactory准备工作完成后进行的后置处理工作
+				postProcessBeanFactory(beanFactory);
+				// 执行BeanFactoryPostProcessor的方法
+				invokeBeanFactoryPostProcessors(beanFactory);
+				// 注册BeanPostProcessor Bean 的前置后置处理器
+				registerBeanPostProcessors(beanFactory);
+				// 初始化国际化消息
+				initMessageSource();
+				// 初始化事件处理器
+				initApplicationEventMulticaster();
+				// 子类重写这个方法，在容器刷新的时候可以自定义逻辑；如创建Tomcat，Jetty等WEB服务器
+				onRefresh();
+				// 注册应用的监听器 就是注册实现了ApplicationListener接口的监听器bean，这些监听器是注册到ApplicationEventMulticaster中的
+				registerListeners();
+				//初始化所有剩下的非懒加载的单例bean
+				finishBeanFactoryInitialization(beanFactory);
+				// 完成context的刷新。主要是调用LifecycleProcessor的onRefresh()方法，并且发布事件（ContextRefreshedEvent）
+				finishRefresh();
+			}
     }
 }
 

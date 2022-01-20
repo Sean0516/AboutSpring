@@ -6,7 +6,7 @@ package com.duplicall.test.model;
  * @Date 2021/10/20 15:42
  * @Version 1.0
  */
-public class User {
+public class User  {
 	private String name;
 	private String local;
 
@@ -25,4 +25,5 @@ public class User {
 	public void setLocal(String local) {
 		this.local = local;
 	}
+
 }
