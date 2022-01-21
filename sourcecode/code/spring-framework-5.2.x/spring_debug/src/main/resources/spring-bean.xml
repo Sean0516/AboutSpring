@@ -8,4 +8,10 @@
 
 	</bean>
 	<bean id="echoBeanPostProcessor" class="com.duplicall.test.config.EchoBeanPostProcessor"/>
+	<bean id="applicationEvent" class="com.duplicall.test.config.CustomerApplicationEvent">
+		<constructor-arg value="demo"/>
+	</bean>
+	<bean id="applicationListener" class="com.duplicall.test.config.CustomApplicationListener"/>
+	<bean id="applicationPublish" class="com.duplicall.test.config.CustomApplicationPublish"/>
+	<bean id="lifecycleProcessor" class="com.duplicall.test.config.CustomLifecycle"/>
 </beans>
