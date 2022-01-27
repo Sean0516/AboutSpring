@@ -4,6 +4,7 @@ import com.duplicall.test.config.CustomApplicationPublish;
 import com.duplicall.test.config.CustomerApplicationEvent;
 import com.duplicall.test.config.EchoBeanPostProcessor;
 import com.duplicall.test.model.User;
+import com.duplicall.test.service.HelloTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -30,13 +31,8 @@ public class TestXmlBeanFactory {
 	@Test
 	public void testXmlPathApplicationContext() {
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-bean.xml");
-		User user = applicationContext.getBean("user", User.class);
-		System.out.println("user = " + user);
-		CustomerApplicationEvent applicationEvent = applicationContext.getBean("applicationEvent", CustomerApplicationEvent.class);
-		CustomApplicationPublish applicationPublish = applicationContext.getBean("applicationPublish", CustomApplicationPublish.class);
-		applicationPublish.getApplicationEventPublisher().publishEvent(applicationEvent);
-		applicationContext.start();
-		applicationContext.stop();
+		HelloTest hello = applicationContext.getBean("hello", HelloTest.class);
+		hello.hello();
 
 
 	}
