@@ -215,5 +215,108 @@ public List<Advisor> getAdvisors(MetadataAwareAspectInstanceFactory aspectInstan
 
 
 
-#### 寻找匹配的增强器
+##### 寻找匹配的增强器
+
+
+
+#### 创建代理
+
+1. 获取当前类的属性
+2. 添加代理接口
+3. 封装advisor 增强器，并加入到 ProxyFacotry 中
+4. 设置要代理的类
+5. 自定义ProxyFactory 
+6. 进行代理操作
+
+```java
+protected Object createProxy(Class<?> beanClass, @Nullable String beanName,
+      @Nullable Object[] specificInterceptors, TargetSource targetSource) {
+
+   if (this.beanFactory instanceof ConfigurableListableBeanFactory) {
+      AutoProxyUtils.exposeTargetClass((ConfigurableListableBeanFactory) this.beanFactory, beanName, beanClass);
+   }
+
+   ProxyFactory proxyFactory = new ProxyFactory();
+   // 获取当前类中相关属性
+   proxyFactory.copyFrom(this);
+   // 检测proxy target class 设置以及 preserve target class 属性
+   if (proxyFactory.isProxyTargetClass()) {
+      // Explicit handling of JDK proxy targets (for introduction advice scenarios)
+      if (Proxy.isProxyClass(beanClass)) {
+         // Must allow for introductions; can't just set interfaces to the proxy's interfaces only.
+         for (Class<?> ifc : beanClass.getInterfaces()) {
+            // 添加代理接口
+            proxyFactory.addInterface(ifc);
+         }
+      }
+   }
+   else {
+      // No proxyTargetClass flag enforced, let's apply our default checks...
+      if (shouldProxyTargetClass(beanClass, beanName)) {
+         proxyFactory.setProxyTargetClass(true);
+      }
+      else {
+         evaluateProxyInterfaces(beanClass, proxyFactory);
+      }
+   }
+   // 获取增强器
+   Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
+   // 加入增强器
+   proxyFactory.addAdvisors(advisors);
+   // 设置要代理的类
+   proxyFactory.setTargetSource(targetSource);
+   // 定制代理
+   customizeProxyFactory(proxyFactory);
+   // 用来控制代理工厂被配置后，是否还允许修改通知
+   proxyFactory.setFrozen(this.freezeProxy);
+   if (advisorsPreFiltered()) {
+      proxyFactory.setPreFiltered(true);
+   }
+
+   return proxyFactory.getProxy(getProxyClassLoader());
+}
+```
+
+##### 加入增强器以及设置需要代理的类
+
+
+
+##### 具体代理的创建
+
+```java
+@Override
+public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+   if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+      Class<?> targetClass = config.getTargetClass();
+      if (targetClass == null) {
+         throw new AopConfigException("TargetSource cannot determine target class: " +
+               "Either an interface or a target is required for proxy creation.");
+      }
+      if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+         return new JdkDynamicAopProxy(config);
+      }
+      return new ObjenesisCglibAopProxy(config);
+   }
+   else {
+      return new JdkDynamicAopProxy(config);
+   }
+}
+```
+
+对于使用 jdk 还是cglib 实现动态代理，有一下总结
+
+- 如果对象目标实现了接口，默认情况下会采用jdk 的动态代理实现AOP
+- 如果目标对象实现了接口，可以强制使用Cglib 实现AOP
+- 如果目标对象没有实现接口，必须采用Cglib 来实现 AOP
+
+##### jdk 和Cglib 字节码生成的区别
+
+-  JDK 动态代理只针对实现了接口的类生成代理，不能针对类
+- Cglib 是针对类实现代理，主要是对指定的类生成一个子类，覆盖其中的方法。 因为是继承，所以该类或方法最好不要声明成final 
+
+##### 获取代理
+
+实现代理的方法大同小异，都是首先构造拦截链，然后封装此链进行串联调用。
+
+
 
